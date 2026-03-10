@@ -1,0 +1,24 @@
+# Ignore Visual Studio Code directory
+.vscode/
+
+# Ignore build directory
+build/
+
+# Ignore backup files
+*.bak
+
+# Ignore CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Ignore generated binaries and artifacts
+*.elf
+*.hex
+*.uf2
+*.bin
+*.dis
+*.map
+*.a
+*.ld
