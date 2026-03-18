@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pico/stdlib.h"
+#include <pico/stdlib.h>
 
 #define GLYPH_HEIGHT 10 // Height of each glyph in pixels
 

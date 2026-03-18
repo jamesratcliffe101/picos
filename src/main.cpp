@@ -3,17 +3,19 @@
 #include "pico/stdlib.h"
 #include "pico/status_led.h"
 #include "pico/rand.h"
-#include "hardware/spi.h"
+
 #include "hardware/timer.h"
 #include "hardware/clocks.h"
 
 extern "C" {
+    
     #include "py/runtime.h"
     #include "py/gc.h"
     #include "py/stackctrl.h"
+    #include "shared/readline/readline.h"
     #include "shared/runtime/pyexec.h"
-    #include "lcdspi.h"
-    #include "vtterminal.c"
+    #include "picoterm.h"
+    #include "picocalc.h"
 }
 
 typedef intptr_t mp_int_t;
@@ -96,7 +98,7 @@ void repl_test() {
     printf("\r\nHALT\r\n");
 }
 
-
+/*
 void lcd_test() {
     display_init();
 
@@ -119,27 +121,20 @@ void lcd_test() {
     }
     
 }
+*/
 
 void terminal_test() {
-    vtterminal_init();
-}
-
-
-void monitor_countdown() {
-    for (int i = 10; i < 0; i++) {
-        printf("starting program in %d", i);
-    }
+    picoterm_start();
 }
 
 int main()
 {
+    // need to initialise hardware,
+    // then need to startup micropython and execute boot.py
     stdio_init_all();
-
-    monitor_countdown();
 
     sleep_ms(10000); // sleep for 10 seconds so I have time to setup the serial monitor
 
-    lcd_test();
-    repl_test();
+    picoterm_start();
 }
 

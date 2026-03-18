@@ -1,13 +1,25 @@
-# Create an INTERFACE library for our C module.
-add_library(picoterm INTERFACE)
+add_library(picoterm STATIC)
 
-# Add our source files to the lib
-target_sources(picoterm INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/display.c
+target_sources(picoterm PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/picoterm.c
+    ${CMAKE_CURRENT_LIST_DIR}/commands.c
+    ${CMAKE_CURRENT_LIST_DIR}/commands.h
+    ${CMAKE_CURRENT_LIST_DIR}/songs.c
+    ${CMAKE_CURRENT_LIST_DIR}/songs.h
+    ${CMAKE_CURRENT_LIST_DIR}/tests.c
+    ${CMAKE_CURRENT_LIST_DIR}/tests.h
 )
 
-# Add the current directory as an include directory.
-target_include_directories(picoterm INTERFACE
+target_link_libraries(picoterm PUBLIC
+    hardware_drivers
+    micropython_lib
+    pico_stdlib
+    hardware_spi
+    pico_rand
+    pico_status_led
+    hardware_i2c
+)
+
+target_include_directories(picoterm PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
 )

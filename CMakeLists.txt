@@ -23,8 +23,9 @@ project(picos C CXX ASM)
 pico_sdk_init()
 
 include(micro_python_import.cmake)
-include(library/vtterminal/vtterminal.cmake)
-include(library/lcd/lcdinit.cmake)
+include(library/hardware_drivers/hardware_drivers.cmake)
+include(library/picoterm/picoterm.cmake)
+#include(library/lcd/lcdinit.cmake)
 
 add_executable(picos
     src/main.cpp
@@ -38,14 +39,15 @@ target_compile_definitions(micropython_lib PUBLIC
 # Link against Pico SDK
 target_link_libraries(picos 
         pico_stdlib
-        display_drivers
-        usermod_vtterminal
         micropython_lib
         pico_status_led
         pico_rand
         hardware_i2c
         hardware_timer
         hardware_clocks
+
+        hardware_drivers
+        picoterm
         )
 
 pico_enable_stdio_usb(picos 1)

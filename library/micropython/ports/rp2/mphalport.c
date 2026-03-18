@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <setjmp.h>
+#include <string.h>
 #include "py/builtin.h"
 #include "py/compile.h"
 #include "py/gc.h"
@@ -26,22 +27,15 @@ int mp_hal_stdin_rx_chr(void) {
 
 // Send string of given length
 void mp_hal_stdout_tx_strn(const char *str, size_t len) {
-    // for this to properly work in PICOS, we need to pipe the data the the correct location
-    // If PICOS says we want python to get sent via USB to an external command line, then we run printf() 
-    // If PICOS says we want to pipe the output and input though our custom picoterm (terminal), then we make picoterm calls
-    // actually, we need to make stdio calls, then picoterm can pico those up, and PICOS can manage them, so actually printf() is 
-    // probably best
-
     for (size_t i = 0; i < len; i++) {
         putchar(str[i]);
     }
 }
 
-void mp_hal_stdout_tx_str(const char *str, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        putchar(str[i]);
-    }
-    printf(str);
+// Send standard null-terminated string
+void mp_hal_stdout_tx_str(const char *str) {
+    // Simply calculate the length and let tx_strn handle the safe printing
+    mp_hal_stdout_tx_strn(str, strlen(str));
 }
 
 uint32_t mp_hal_ticks_ms(void) {
