@@ -25,7 +25,6 @@ set(MICROPY_SOURCE_PY
     ${MICROPY_PY_DIR}/emitcommon.c
     ${MICROPY_PY_DIR}/emitglue.c
     ${MICROPY_PY_DIR}/emitinlinerv32.c
-    ${MICROPY_PY_DIR}/emitnative.c
     ${MICROPY_PY_DIR}/emitinlinethumb.c
     ${MICROPY_PY_DIR}/emitinlinextensa.c
     ${MICROPY_PY_DIR}/emitnarm.c
@@ -50,6 +49,7 @@ set(MICROPY_SOURCE_PY
     ${MICROPY_PY_DIR}/modio.c
     ${MICROPY_PY_DIR}/modmath.c
     ${MICROPY_PY_DIR}/modmicropython.c
+    ${MICROPY_PY_DIR}/modstring.c
     ${MICROPY_PY_DIR}/modstruct.c
     ${MICROPY_PY_DIR}/modsys.c
     ${MICROPY_PY_DIR}/modthread.c
@@ -107,6 +107,7 @@ set(MICROPY_SOURCE_PY
     ${MICROPY_PY_DIR}/objstr.c
     ${MICROPY_PY_DIR}/objstringio.c
     ${MICROPY_PY_DIR}/objstrunicode.c
+    ${MICROPY_PY_DIR}/objtemplate.c
     ${MICROPY_PY_DIR}/objtuple.c
     ${MICROPY_PY_DIR}/objtype.c
     ${MICROPY_PY_DIR}/objzip.c

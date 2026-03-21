@@ -11,16 +11,30 @@ extern "C" {
     
     #include "py/runtime.h"
     #include "py/gc.h"
+    #include "py/mphal.h"
     #include "py/stackctrl.h"
     #include "shared/readline/readline.h"
     #include "shared/runtime/pyexec.h"
+    #include "shared/runtime/gchelper.h"
     #include "picoterm.h"
     #include "picocalc.h"
+    #include "pico/multicore.h"
+
+    void gc_collect(void) {
+        gc_collect_start();
+        gc_helper_collect_regs_and_stack();
+        gc_collect_end();
+    }
+
+    void nlr_jump_fail(void *val) {
+        mp_printf(&mp_plat_print, "FATAL: uncaught exception %p\n", val);
+        mp_obj_print_exception(&mp_plat_print, MP_OBJ_FROM_PTR(val));
+        for (;;) {
+            __breakpoint();
+        }
+    }
 }
 
-typedef intptr_t mp_int_t;
-typedef uintptr_t mp_uint_t;
-typedef long mp_off_t;
 
 int64_t alarm_callback(alarm_id_t id, void *user_data) {
     // Put your timeout handler code in here
@@ -123,8 +137,12 @@ void lcd_test() {
 }
 */
 
-void terminal_test() {
-    picoterm_start();
+void background_task() {
+    printf("Multicore Starting");
+    for(int i = 0; i < 20; i++){
+        sleep_ms(2000);
+        printf("multiCore Active!");
+    }
 }
 
 int main()
@@ -134,6 +152,8 @@ int main()
     stdio_init_all();
 
     sleep_ms(10000); // sleep for 10 seconds so I have time to setup the serial monitor
+
+    //multicore_launch_core1(background_task);
 
     picoterm_start();
 }

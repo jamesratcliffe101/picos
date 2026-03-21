@@ -621,9 +621,8 @@ int pyexec_friendly_repl(void) {
     mp_hal_stdio_mode_raw();
 
 friendly_repl_reset:
-    //mp_hal_stdout_tx_str(MICROPY_BANNER_NAME_AND_VERSION);
-    mp_hal_stdout_tx_str("MicroPython Picos edition; \n");
-    mp_hal_stdout_tx_str("Compiled:" MICROPY_BUILD_DATE);
+    mp_hal_stdout_tx_str(MICROPY_BANNER_NAME_AND_VERSION);
+    mp_hal_stdout_tx_str("; " MICROPY_BANNER_MACHINE);
     mp_hal_stdout_tx_str("\r\n");
     #if MICROPY_PY_BUILTINS_HELP
     mp_hal_stdout_tx_str("Type \"help()\" for more information.\r\n");

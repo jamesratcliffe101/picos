@@ -21,6 +21,7 @@
 #include "py/gc.h"
 #include "py/runtime.h"
 #include "py/stackctrl.h"
+#include "shared/readline/readline.h"
 #include "shared/runtime/pyexec.h"
 
 volatile bool user_interrupt = false;
@@ -505,15 +506,37 @@ void power_off_set(const char *seconds)
 }
 
 void python(){
-    static uint32_t heap[4096];
+    static uint32_t heap[16384];
+
+    mp_thread_init();
+
+    mp_stack_ctrl_init();
+    mp_stack_set_limit(8192);
+
+
     gc_init(heap, heap + (sizeof(heap) / sizeof(uint32_t)));
+
+    gc_info_t info;
+    gc_info(&info);
+    printf("[py] gc total=%u used=%u free=%u\n",
+        (unsigned)info.total, (unsigned)info.used, (unsigned)info.free); stdio_flush();
+
+    printf("[py] gc_alloc test\n"); stdio_flush();
+    void *test = gc_alloc(64, 0);
+    if (test) {
+        gc_free(test);
+    } else {
+        printf("[py] gc_alloc FAILED\n"); stdio_flush();
+        return;
+    }
     mp_init();
+
+    readline_init0();
     pyexec_friendly_repl();
 
-    irq_set_enabled(USBCTRL_IRQ, false); 
-    mp_stack_ctrl_init(); 
     mp_deinit();
-    irq_set_enabled(USBCTRL_IRQ, true);
+
+    
 }
 
 void reset()
